@@ -77,7 +77,9 @@ document.addEventListener('DOMContentLoaded', () => {
       'dashboard': 'داشبورد مدیریت تولید',
       'warehouse': 'مدیریت انبار',
       'production': 'ثبت فرآیند تولید',
-      'reports': 'گزارش‌ها و آمار'
+      'reports': 'گزارش‌ها و آمار',
+      'ai': 'هوش مصنوعی',
+      'settings': 'تنظیمات'
     };
     if (pageTitle) {
       pageTitle.textContent = titles[tabId] || 'سیستم مدیریت تولید';
