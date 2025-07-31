@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body class="bg-gradient-to-br from-gray-50 to-gray-100 font-sans">
+  <div id="dark-mode-style"></div>
 
   <!-- Mobile Overlay -->
   <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden overlay"></div>
@@ -1309,37 +1310,61 @@
         </div>
         <!-- Settings Tab Content -->
         <div id="settings-tab" class="tab-content">
-          <div class="bg-white rounded-2xl shadow-lg p-6 card-hover border border-gray-100 mb-6 fade-in">
-            <h2 class="text-2xl font-bold text-gray-800 mb-4">⚙️ بخش تنظیمات</h2>
-            <ul class="list-disc pr-6 text-gray-700 space-y-2">
-              <li>مدیریت کاربران و سطوح دسترسی</li>
-              <li>تنظیمات مربوط به موجودی کالا</li>
-              <li>تنظیمات رابط کاربری</li>
-              <li>پشتیبان‌گیری و بازیابی اطلاعات</li>
-              <li>اتصال به سرویس‌های بیرونی</li>
-            </ul>
-            <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
-                <h3 class="font-semibold text-lg mb-2">مدیریت کاربران و سطوح دسترسی</h3>
-                <p class="text-gray-600 text-sm">تعریف کاربر جدید (اپراتور، مدیر، انباردار...)</p>
-                <p class="text-gray-600 text-sm mt-2">تعیین سطح دسترسی به صفحات یا عملیات</p>
+          <div class="max-w-2xl mx-auto bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-6 card-hover border border-gray-100 mb-6 fade-in">
+            <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6 flex items-center gap-2">
+              ⚙️ تنظیمات برنامه
+            </h2>
+            <form id="settings-form" class="space-y-6">
+              <div class="flex flex-col sm:flex-row gap-6">
+                <div class="flex-1">
+                  <label class="block text-gray-700 dark:text-gray-200 font-medium mb-2" for="theme-toggle">حالت تیره / روشن</label>
+                  <button id="theme-toggle" type="button" class="relative w-16 h-8 bg-gray-200 dark:bg-gray-700 rounded-full transition-colors focus:outline-none">
+                    <span id="theme-toggle-thumb" class="absolute left-1 top-1 w-6 h-6 bg-white dark:bg-gray-800 rounded-full shadow transition-all"></span>
+                    <span class="absolute right-2 top-1.5 text-xs text-gray-500 dark:text-gray-300">🌙</span>
+                    <span class="absolute left-2 top-1.5 text-xs text-gray-500 dark:text-gray-300">☀️</span>
+                  </button>
+                </div>
+                <div class="flex-1">
+                  <label class="block text-gray-700 dark:text-gray-200 font-medium mb-2" for="language-select">زبان سیستم</label>
+                  <select id="language-select" class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-4 py-2 text-base focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="fa">فارسی</option>
+                    <option value="en">English</option>
+                  </select>
+                </div>
               </div>
-              <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
-                <h3 class="font-semibold text-lg mb-2">تنظیمات موجودی کالا</h3>
-                <p class="text-gray-600 text-sm">تعیین حداقل موجودی برای هر کالا</p>
-                <p class="text-gray-600 text-sm mt-2">تعیین واحد اندازه‌گیری پیش‌فرض برای کالاها</p>
+              <div class="flex flex-col sm:flex-row gap-6">
+                <div class="flex-1">
+                  <label class="block text-gray-700 dark:text-gray-200 font-medium mb-2" for="font-size-select">اندازه فونت جداول</label>
+                  <select id="font-size-select" class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-4 py-2 text-base focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="sm">کوچک</option>
+                    <option value="base">متوسط</option>
+                    <option value="lg">بزرگ</option>
+                  </select>
+                </div>
+                <div class="flex-1">
+                  <label class="block text-gray-700 dark:text-gray-200 font-medium mb-2" for="min-inventory">حداقل موجودی کالا (پیش‌فرض)</label>
+                  <input id="min-inventory" type="number" min="0" class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-4 py-2 text-base focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="مثلاً 10">
+                </div>
               </div>
-              <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
-                <h3 class="font-semibold text-lg mb-2">تنظیمات رابط کاربری</h3>
-                <p class="text-gray-600 text-sm">حالت تیره / روشن، زبان سیستم (فارسی/انگلیسی)</p>
-                <p class="text-gray-600 text-sm mt-2">تنظیمات فونت و اندازه جدول‌ها</p>
+              <div class="flex flex-col sm:flex-row gap-6">
+                <div class="flex-1 flex flex-col gap-2">
+                  <label class="block text-gray-700 dark:text-gray-200 font-medium mb-2">پشتیبان‌گیری و بازیابی</label>
+                  <button id="backup-btn" type="button" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">دریافت بک‌آپ</button>
+                  <input id="restore-input" type="file" accept=".json,.bak" class="hidden">
+                  <button id="restore-btn" type="button" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg transition-colors">بازیابی بک‌آپ</button>
+                </div>
+                <div class="flex-1 flex flex-col gap-2">
+                  <label class="block text-gray-700 dark:text-gray-200 font-medium mb-2">پشتیبانی</label>
+                  <button id="support-btn" type="button" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-2 justify-center">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18.364 5.636A9 9 0 105.636 18.364 9 9 0 0018.364 5.636z"/><path stroke-linecap="round" stroke-linejoin="round" d="M9.172 9.172a4 4 0 015.656 5.656"/></svg>
+                    ارتباط با پشتیبانی
+                  </button>
+                </div>
               </div>
-              <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
-                <h3 class="font-semibold text-lg mb-2">پشتیبان‌گیری و اتصال به سرویس‌ها</h3>
-                <p class="text-gray-600 text-sm">گرفتن بک‌آپ از پایگاه داده، بازیابی بک‌آپ قبلی، زمان‌بندی بک‌آپ خودکار</p>
-                <p class="text-gray-600 text-sm mt-2">تنظیمات اتصال به سیستم پیامک یا ایمیل، اتصال به APIهای خارجی</p>
+              <div class="flex justify-end mt-8">
+                <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg font-bold transition-colors">ذخیره تنظیمات</button>
               </div>
-            </div>
+            </form>
           </div>
         </div>
       </section>

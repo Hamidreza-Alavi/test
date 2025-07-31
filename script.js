@@ -344,4 +344,156 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   });
+
+  // === Settings Tab Logic ===
+  function applySettings(settings) {
+    // Theme
+    if (settings.theme === 'dark') {
+      document.body.classList.add('dark');
+      document.getElementById('dark-mode-style').innerHTML = `
+        body.dark { background: #18181b !important; color: #f3f4f6; }
+        .dark .bg-white { background-color: #23272f !important; }
+        .dark .text-gray-800 { color: #f3f4f6 !important; }
+        .dark .text-gray-700 { color: #e5e7eb !important; }
+        .dark .border-gray-100 { border-color: #23272f !important; }
+        .dark .bg-gray-50 { background-color: #23272f !important; }
+        .dark .bg-gray-100 { background-color: #23272f !important; }
+        .dark .bg-gray-200 { background-color: #23272f !important; }
+        .dark .bg-gray-900 { background-color: #18181b !important; }
+        .dark .bg-gray-800 { background-color: #23272f !important; }
+        .dark .dark\:bg-gray-900 { background-color: #18181b !important; }
+        .dark .dark\:bg-gray-800 { background-color: #23272f !important; }
+        .dark .dark\:text-gray-100 { color: #f3f4f6 !important; }
+        .dark .dark\:text-gray-200 { color: #e5e7eb !important; }
+        .dark .dark\:border-gray-700 { border-color: #23272f !important; }
+      `;
+    } else {
+      document.body.classList.remove('dark');
+      document.getElementById('dark-mode-style').innerHTML = '';
+    }
+    // Font size
+    document.documentElement.style.setProperty('--table-font-size', settings.fontSize || '1rem');
+    // Language
+    // (For demo, just set dir/language)
+    if (settings.language === 'en') {
+      document.documentElement.lang = 'en';
+      document.documentElement.dir = 'ltr';
+    } else {
+      document.documentElement.lang = 'fa';
+      document.documentElement.dir = 'rtl';
+    }
+    // Minimum inventory (could be used elsewhere)
+  }
+
+  function loadSettings() {
+    const settings = JSON.parse(localStorage.getItem('app-settings') || '{}');
+    // Defaults
+    return {
+      theme: settings.theme || 'light',
+      language: settings.language || 'fa',
+      fontSize: settings.fontSize || 'base',
+      minInventory: settings.minInventory || '',
+    };
+  }
+
+  function saveSettings(settings) {
+    localStorage.setItem('app-settings', JSON.stringify(settings));
+  }
+
+  function updateSettingsUI(settings) {
+    // Theme toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const thumb = document.getElementById('theme-toggle-thumb');
+    if (settings.theme === 'dark') {
+      thumb.style.left = 'calc(100% - 1.75rem)';
+      themeToggle.classList.add('bg-gray-700');
+      themeToggle.classList.remove('bg-gray-200');
+    } else {
+      thumb.style.left = '0.25rem';
+      themeToggle.classList.add('bg-gray-200');
+      themeToggle.classList.remove('bg-gray-700');
+    }
+    // Language
+    document.getElementById('language-select').value = settings.language;
+    // Font size
+    document.getElementById('font-size-select').value = settings.fontSize;
+    // Min inventory
+    document.getElementById('min-inventory').value = settings.minInventory;
+  }
+
+  const settingsForm = document.getElementById('settings-form');
+  if (settingsForm) {
+    let settings = loadSettings();
+    applySettings(settings);
+    setTimeout(() => updateSettingsUI(settings), 100); // Wait for DOM
+    // Theme toggle
+    document.getElementById('theme-toggle').addEventListener('click', () => {
+      settings.theme = settings.theme === 'dark' ? 'light' : 'dark';
+      applySettings(settings);
+      updateSettingsUI(settings);
+      saveSettings(settings);
+    });
+    // Language
+    document.getElementById('language-select').addEventListener('change', e => {
+      settings.language = e.target.value;
+      applySettings(settings);
+      saveSettings(settings);
+    });
+    // Font size
+    document.getElementById('font-size-select').addEventListener('change', e => {
+      settings.fontSize = e.target.value;
+      // For demo, change table font size
+      document.documentElement.style.setProperty('--table-font-size', settings.fontSize === 'sm' ? '0.85rem' : settings.fontSize === 'lg' ? '1.15rem' : '1rem');
+      saveSettings(settings);
+    });
+    // Min inventory
+    document.getElementById('min-inventory').addEventListener('input', e => {
+      settings.minInventory = e.target.value;
+      saveSettings(settings);
+    });
+    // Backup
+    document.getElementById('backup-btn').addEventListener('click', () => {
+      const data = localStorage.getItem('app-settings') || '{}';
+      const blob = new Blob([data], {type: 'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'settings-backup.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    });
+    // Restore
+    document.getElementById('restore-btn').addEventListener('click', () => {
+      document.getElementById('restore-input').click();
+    });
+    document.getElementById('restore-input').addEventListener('change', e => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        try {
+          const restored = JSON.parse(evt.target.result);
+          saveSettings(restored);
+          applySettings(restored);
+          updateSettingsUI(restored);
+          alert('تنظیمات با موفقیت بازیابی شد!');
+        } catch {
+          alert('فایل نامعتبر است.');
+        }
+      };
+      reader.readAsText(file);
+    });
+    // Support
+    document.getElementById('support-btn').addEventListener('click', () => {
+      alert('برای پشتیبانی با شماره 021-12345678 یا ایمیل support@example.com تماس بگیرید.');
+    });
+    // Save
+    settingsForm.addEventListener('submit', e => {
+      e.preventDefault();
+      saveSettings(settings);
+      alert('تنظیمات ذخیره شد!');
+    });
+  }
 });
