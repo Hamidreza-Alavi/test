@@ -347,84 +347,68 @@ input:checked + .slider:before {
   }
 }
 
-/* Dark Mode Styles */
-.dark-mode {
+/* Dark mode support for Tailwind */
+.dark {
+  color-scheme: dark;
+}
+
+/* Additional dark mode styles for better compatibility */
+.dark body {
   background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
-  color: #f9fafb;
 }
 
-.dark-mode .bg-white {
-  background-color: #374151;
-  color: #f9fafb;
-}
-
-.dark-mode .bg-gray-50 {
-  background-color: #4b5563;
-  color: #f9fafb;
-}
-
-.dark-mode .bg-gray-100 {
-  background-color: #6b7280;
-  color: #f9fafb;
-}
-
-.dark-mode .text-gray-800 {
-  color: #f9fafb;
-}
-
-.dark-mode .text-gray-700 {
-  color: #d1d5db;
-}
-
-.dark-mode .text-gray-600 {
+/* Ensure proper contrast in dark mode */
+.dark .text-gray-600 {
   color: #9ca3af;
 }
 
-.dark-mode .border-gray-200 {
-  border-color: #6b7280;
+.dark .text-gray-700 {
+  color: #d1d5db;
 }
 
-.dark-mode .border-gray-300 {
-  border-color: #9ca3af;
+.dark .text-gray-800 {
+  color: #f9fafb;
 }
 
-.dark-mode input,
-.dark-mode select,
-.dark-mode textarea {
-  background-color: #4b5563;
+/* Dark mode form elements */
+.dark input,
+.dark select,
+.dark textarea {
+  background-color: #374151;
   color: #f9fafb;
   border-color: #6b7280;
 }
 
-.dark-mode input:focus,
-.dark-mode select:focus,
-.dark-mode textarea:focus {
+.dark input:focus,
+.dark select:focus,
+.dark textarea:focus {
   border-color: #3b82f6;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
-.dark-mode .settings-table th {
+/* Dark mode table improvements */
+.dark .settings-table th {
   background-color: #4b5563;
   color: #f9fafb;
 }
 
-.dark-mode .settings-table tr:hover {
+.dark .settings-table tr:hover {
   background-color: #6b7280;
 }
 
-.dark-mode .settings-table td {
+.dark .settings-table td {
   border-bottom-color: #6b7280;
 }
 
 /* Dark mode toggle switch adjustments */
-.dark-mode .slider {
+.dark .slider {
   background-color: #6b7280;
 }
 
-.dark-mode input:checked + .slider {
+.dark input:checked + .slider {
   background-color: #3b82f6;
 }
 
-.dark-mode .slider:before {
+.dark .slider:before {
   background-color: #f9fafb;
 }
