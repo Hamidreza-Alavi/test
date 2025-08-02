@@ -344,4 +344,192 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   });
+
+  // Settings functionality
+  const settingsTabBtns = document.querySelectorAll('.settings-tab-btn');
+  const settingsContents = document.querySelectorAll('.settings-content');
+
+  function switchSettingsTab(tabId) {
+    // Hide all settings contents
+    settingsContents.forEach(content => {
+      content.classList.remove('active');
+    });
+    
+    // Show selected settings content
+    const targetContent = document.getElementById(`${tabId}-settings`);
+    if (targetContent) {
+      targetContent.classList.add('active');
+    }
+    
+    // Update active settings tab button
+    settingsTabBtns.forEach(btn => {
+      btn.classList.remove('active', 'bg-blue-100', 'text-blue-700');
+      btn.classList.add('bg-gray-100', 'text-gray-600');
+    });
+    
+    const activeBtn = document.querySelector(`[data-settings-tab="${tabId}"]`);
+    if (activeBtn) {
+      activeBtn.classList.add('active', 'bg-blue-100', 'text-blue-700');
+      activeBtn.classList.remove('bg-gray-100', 'text-gray-600');
+    }
+  }
+
+  // Add event listeners to settings tab buttons
+  settingsTabBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const tabId = btn.dataset.settingsTab;
+      if (tabId) {
+        switchSettingsTab(tabId);
+      }
+    });
+  });
+
+  // Add user form handling
+  const addUserForm = document.getElementById('add-user-form');
+  if (addUserForm) {
+    addUserForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const userName = document.getElementById('user-name').value;
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      const userRole = document.getElementById('user-role').value;
+      
+      if (userName && username && password) {
+        // Here you would typically send the data to your backend
+        alert(`کاربر جدید "${userName}" با موفقیت اضافه شد!`);
+        addUserForm.reset();
+        
+        // Add to users list (in a real app, this would come from the server)
+        const usersTable = document.querySelector('#users-settings tbody');
+        if (usersTable) {
+          const newRow = document.createElement('tr');
+          newRow.className = 'border-b';
+          newRow.innerHTML = `
+            <td class="px-4 py-2">${userName}</td>
+            <td class="px-4 py-2">${username}</td>
+            <td class="px-4 py-2"><span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">${getRoleText(userRole)}</span></td>
+            <td class="px-4 py-2"><span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">فعال</span></td>
+            <td class="px-4 py-2">
+              <button class="text-blue-600 hover:text-blue-800 ml-2">ویرایش</button>
+              <button class="text-red-600 hover:text-red-800">حذف</button>
+            </td>
+          `;
+          usersTable.appendChild(newRow);
+        }
+      } else {
+        alert('لطفاً تمام فیلدها را پر کنید!');
+      }
+    });
+  }
+
+  function getRoleText(role) {
+    const roles = {
+      'operator': 'اپراتور',
+      'manager': 'مدیر',
+      'warehouse': 'انباردار',
+      'admin': 'مدیر سیستم'
+    };
+    return roles[role] || role;
+  }
+
+  // Dark mode toggle functionality
+  const darkModeToggle = document.getElementById('dark-mode-toggle');
+  if (darkModeToggle) {
+    darkModeToggle.addEventListener('change', (e) => {
+      if (e.target.checked) {
+        document.body.classList.add('dark-mode');
+        localStorage.setItem('darkMode', 'enabled');
+      } else {
+        document.body.classList.remove('dark-mode');
+        localStorage.setItem('darkMode', 'disabled');
+      }
+    });
+
+    // Check for saved dark mode preference
+    const savedDarkMode = localStorage.getItem('darkMode');
+    if (savedDarkMode === 'enabled') {
+      darkModeToggle.checked = true;
+      document.body.classList.add('dark-mode');
+    }
+  }
+
+  // Save settings functionality
+  document.querySelectorAll('button').forEach(btn => {
+    if (btn.textContent.includes('ذخیره تنظیمات') || btn.textContent.includes('اعمال تنظیمات')) {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        alert('تنظیمات با موفقیت ذخیره شد!');
+      });
+    }
+  });
+
+  // Backup functionality
+  const createBackupBtn = document.querySelector('button:contains("ایجاد پشتیبان")');
+  if (createBackupBtn) {
+    createBackupBtn.addEventListener('click', () => {
+      alert('پشتیبان‌گیری در حال انجام است...');
+      setTimeout(() => {
+        alert('پشتیبان‌گیری با موفقیت انجام شد!');
+      }, 2000);
+    });
+  }
+
+  const restoreBackupBtn = document.querySelector('button:contains("بازیابی")');
+  if (restoreBackupBtn) {
+    restoreBackupBtn.addEventListener('click', () => {
+      if (confirm('آیا از بازیابی پشتیبان اطمینان دارید؟ این عمل قابل بازگشت نیست.')) {
+        alert('بازیابی در حال انجام است...');
+        setTimeout(() => {
+          alert('بازیابی با موفقیت انجام شد!');
+        }, 2000);
+      }
+    });
+  }
+
+  // Test connection buttons
+  document.querySelectorAll('button').forEach(btn => {
+    if (btn.textContent.includes('تست اتصال')) {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const originalText = btn.textContent;
+        btn.textContent = 'در حال تست...';
+        btn.disabled = true;
+        
+        setTimeout(() => {
+          btn.textContent = 'اتصال موفق';
+          btn.classList.add('bg-green-600');
+          btn.classList.remove('bg-blue-600');
+          
+          setTimeout(() => {
+            btn.textContent = originalText;
+            btn.classList.remove('bg-green-600');
+            btn.classList.add('bg-blue-600');
+            btn.disabled = false;
+          }, 2000);
+        }, 1500);
+      });
+    }
+  });
+
+  // User permissions handling
+  const permissionUserSelect = document.getElementById('permission-user');
+  if (permissionUserSelect) {
+    permissionUserSelect.addEventListener('change', (e) => {
+      const selectedUser = e.target.value;
+      if (selectedUser) {
+        // In a real app, you would load the user's permissions from the server
+        console.log(`Loading permissions for user: ${selectedUser}`);
+      }
+    });
+  }
+
+  // Save permissions button
+  const savePermissionsBtn = document.querySelector('button:contains("ذخیره دسترسی‌ها")');
+  if (savePermissionsBtn) {
+    savePermissionsBtn.addEventListener('click', () => {
+      alert('دسترسی‌های کاربر با موفقیت ذخیره شد!');
+    });
+  }
 });

@@ -1309,35 +1309,372 @@
         </div>
         <!-- Settings Tab Content -->
         <div id="settings-tab" class="tab-content">
+          <!-- Settings Navigation -->
           <div class="bg-white rounded-2xl shadow-lg p-6 card-hover border border-gray-100 mb-6 fade-in">
-            <h2 class="text-2xl font-bold text-gray-800 mb-4">⚙️ بخش تنظیمات</h2>
-            <ul class="list-disc pr-6 text-gray-700 space-y-2">
-              <li>مدیریت کاربران و سطوح دسترسی</li>
-              <li>تنظیمات مربوط به موجودی کالا</li>
-              <li>تنظیمات رابط کاربری</li>
-              <li>پشتیبان‌گیری و بازیابی اطلاعات</li>
-              <li>اتصال به سرویس‌های بیرونی</li>
-            </ul>
-            <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
-                <h3 class="font-semibold text-lg mb-2">مدیریت کاربران و سطوح دسترسی</h3>
-                <p class="text-gray-600 text-sm">تعریف کاربر جدید (اپراتور، مدیر، انباردار...)</p>
-                <p class="text-gray-600 text-sm mt-2">تعیین سطح دسترسی به صفحات یا عملیات</p>
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">⚙️ تنظیمات سیستم</h2>
+            
+            <!-- Settings Tabs -->
+            <div class="flex flex-wrap gap-2 mb-6">
+              <button class="settings-tab-btn active px-4 py-2 rounded-lg bg-blue-100 text-blue-700 font-medium transition-all" data-settings-tab="users">
+                👥 مدیریت کاربران
+              </button>
+              <button class="settings-tab-btn px-4 py-2 rounded-lg bg-gray-100 text-gray-600 font-medium transition-all" data-settings-tab="inventory">
+                📦 تنظیمات موجودی
+              </button>
+              <button class="settings-tab-btn px-4 py-2 rounded-lg bg-gray-100 text-gray-600 font-medium transition-all" data-settings-tab="ui">
+                🎨 رابط کاربری
+              </button>
+              <button class="settings-tab-btn px-4 py-2 rounded-lg bg-gray-100 text-gray-600 font-medium transition-all" data-settings-tab="backup">
+                💾 پشتیبان‌گیری
+              </button>
+            </div>
+
+            <!-- Users Management Settings -->
+            <div id="users-settings" class="settings-content active">
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Add New User -->
+                <div class="bg-gray-50 rounded-xl p-6 border border-gray-200">
+                  <h3 class="text-lg font-semibold text-gray-800 mb-4">➕ تعریف کاربر جدید</h3>
+                  <form id="add-user-form" class="space-y-4">
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-2">نام و نام خانوادگی</label>
+                      <input type="text" id="user-name" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-2">نام کاربری</label>
+                      <input type="text" id="username" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-2">رمز عبور</label>
+                      <input type="password" id="password" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-2">نوع کاربر</label>
+                      <select id="user-role" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <option value="operator">اپراتور</option>
+                        <option value="manager">مدیر</option>
+                        <option value="warehouse">انباردار</option>
+                        <option value="admin">مدیر سیستم</option>
+                      </select>
+                    </div>
+                    <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
+                      افزودن کاربر
+                    </button>
+                  </form>
+                </div>
+
+                <!-- User Permissions -->
+                <div class="bg-gray-50 rounded-xl p-6 border border-gray-200">
+                  <h3 class="text-lg font-semibold text-gray-800 mb-4">🔐 تنظیمات دسترسی</h3>
+                  <div class="space-y-4">
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-2">انتخاب کاربر</label>
+                      <select id="permission-user" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <option value="">انتخاب کنید...</option>
+                        <option value="user1">احمد محمدی (اپراتور)</option>
+                        <option value="user2">فاطمه احمدی (مدیر)</option>
+                        <option value="user3">علی رضایی (انباردار)</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-2">دسترسی‌های مجاز</label>
+                      <div class="space-y-2">
+                        <label class="flex items-center">
+                          <input type="checkbox" class="mr-2 text-blue-600" checked> داشبورد
+                        </label>
+                        <label class="flex items-center">
+                          <input type="checkbox" class="mr-2 text-blue-600" checked> مدیریت انبار
+                        </label>
+                        <label class="flex items-center">
+                          <input type="checkbox" class="mr-2 text-blue-600"> ثبت تولید
+                        </label>
+                        <label class="flex items-center">
+                          <input type="checkbox" class="mr-2 text-blue-600"> گزارش‌ها
+                        </label>
+                        <label class="flex items-center">
+                          <input type="checkbox" class="mr-2 text-blue-600"> تنظیمات
+                        </label>
+                      </div>
+                    </div>
+                    <button class="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors">
+                      ذخیره دسترسی‌ها
+                    </button>
+                  </div>
+                </div>
               </div>
-              <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
-                <h3 class="font-semibold text-lg mb-2">تنظیمات موجودی کالا</h3>
-                <p class="text-gray-600 text-sm">تعیین حداقل موجودی برای هر کالا</p>
-                <p class="text-gray-600 text-sm mt-2">تعیین واحد اندازه‌گیری پیش‌فرض برای کالاها</p>
+
+              <!-- Users List -->
+              <div class="mt-6 bg-gray-50 rounded-xl p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">👥 لیست کاربران</h3>
+                <div class="overflow-x-auto">
+                  <table class="w-full text-sm text-right">
+                    <thead class="bg-gray-100">
+                      <tr>
+                        <th class="px-4 py-2 text-right">نام</th>
+                        <th class="px-4 py-2 text-right">نام کاربری</th>
+                        <th class="px-4 py-2 text-right">نوع کاربر</th>
+                        <th class="px-4 py-2 text-right">وضعیت</th>
+                        <th class="px-4 py-2 text-right">عملیات</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="border-b">
+                        <td class="px-4 py-2">احمد محمدی</td>
+                        <td class="px-4 py-2">ahmad.m</td>
+                        <td class="px-4 py-2"><span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">اپراتور</span></td>
+                        <td class="px-4 py-2"><span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">فعال</span></td>
+                        <td class="px-4 py-2">
+                          <button class="text-blue-600 hover:text-blue-800 ml-2">ویرایش</button>
+                          <button class="text-red-600 hover:text-red-800">حذف</button>
+                        </td>
+                      </tr>
+                      <tr class="border-b">
+                        <td class="px-4 py-2">فاطمه احمدی</td>
+                        <td class="px-4 py-2">fateme.a</td>
+                        <td class="px-4 py-2"><span class="px-2 py-1 bg-purple-100 text-purple-800 rounded-full text-xs">مدیر</span></td>
+                        <td class="px-4 py-2"><span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">فعال</span></td>
+                        <td class="px-4 py-2">
+                          <button class="text-blue-600 hover:text-blue-800 ml-2">ویرایش</button>
+                          <button class="text-red-600 hover:text-red-800">حذف</button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
-              <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
-                <h3 class="font-semibold text-lg mb-2">تنظیمات رابط کاربری</h3>
-                <p class="text-gray-600 text-sm">حالت تیره / روشن، زبان سیستم (فارسی/انگلیسی)</p>
-                <p class="text-gray-600 text-sm mt-2">تنظیمات فونت و اندازه جدول‌ها</p>
+            </div>
+
+            <!-- Inventory Settings -->
+            <div id="inventory-settings" class="settings-content hidden">
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Minimum Stock Levels -->
+                <div class="bg-gray-50 rounded-xl p-6 border border-gray-200">
+                  <h3 class="text-lg font-semibold text-gray-800 mb-4">📊 حداقل موجودی کالاها</h3>
+                  <div class="space-y-4">
+                    <div class="flex items-center justify-between p-3 bg-white rounded-lg border">
+                      <span class="font-medium">بطری ۵۰۰ میلی</span>
+                      <input type="number" value="100" class="w-20 px-2 py-1 border border-gray-300 rounded text-center">
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-white rounded-lg border">
+                      <span class="font-medium">درپوش پلاستیکی</span>
+                      <input type="number" value="200" class="w-20 px-2 py-1 border border-gray-300 rounded text-center">
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-white rounded-lg border">
+                      <span class="font-medium">برچسب محصول</span>
+                      <input type="number" value="150" class="w-20 px-2 py-1 border border-gray-300 rounded text-center">
+                    </div>
+                    <button class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
+                      ذخیره تنظیمات
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Default Units -->
+                <div class="bg-gray-50 rounded-xl p-6 border border-gray-200">
+                  <h3 class="text-lg font-semibold text-gray-800 mb-4">📏 واحدهای اندازه‌گیری</h3>
+                  <div class="space-y-4">
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-2">واحد پیش‌فرض برای مایعات</label>
+                      <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <option value="ml">میلی‌لیتر (ml)</option>
+                        <option value="l">لیتر (L)</option>
+                        <option value="cc">سانتی‌متر مکعب (cc)</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-2">واحد پیش‌فرض برای جامدات</label>
+                      <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <option value="kg">کیلوگرم (kg)</option>
+                        <option value="g">گرم (g)</option>
+                        <option value="ton">تن (ton)</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-2">واحد پیش‌فرض برای قطعات</label>
+                      <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <option value="piece">عدد (piece)</option>
+                        <option value="box">جعبه (box)</option>
+                        <option value="pack">بسته (pack)</option>
+                      </select>
+                    </div>
+                    <button class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
+                      ذخیره تنظیمات
+                    </button>
+                  </div>
+                </div>
               </div>
-              <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
-                <h3 class="font-semibold text-lg mb-2">پشتیبان‌گیری و اتصال به سرویس‌ها</h3>
-                <p class="text-gray-600 text-sm">گرفتن بک‌آپ از پایگاه داده، بازیابی بک‌آپ قبلی، زمان‌بندی بک‌آپ خودکار</p>
-                <p class="text-gray-600 text-sm mt-2">تنظیمات اتصال به سیستم پیامک یا ایمیل، اتصال به APIهای خارجی</p>
+            </div>
+
+            <!-- UI Settings -->
+            <div id="ui-settings" class="settings-content hidden">
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Theme Settings -->
+                <div class="bg-gray-50 rounded-xl p-6 border border-gray-200">
+                  <h3 class="text-lg font-semibold text-gray-800 mb-4">🌙 حالت نمایش</h3>
+                  <div class="space-y-4">
+                    <div class="flex items-center justify-between p-4 bg-white rounded-lg border">
+                      <div>
+                        <span class="font-medium">حالت تیره</span>
+                        <p class="text-sm text-gray-600">فعال‌سازی تم تاریک برای محیط‌های کم نور</p>
+                      </div>
+                      <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="dark-mode-toggle" class="sr-only peer">
+                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                      </label>
+                    </div>
+                    <div class="flex items-center justify-between p-4 bg-white rounded-lg border">
+                      <div>
+                        <span class="font-medium">حالت خودکار</span>
+                        <p class="text-sm text-gray-600">تغییر خودکار بر اساس تنظیمات سیستم</p>
+                      </div>
+                      <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" checked class="sr-only peer">
+                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Font and Table Settings -->
+                <div class="bg-gray-50 rounded-xl p-6 border border-gray-200">
+                  <h3 class="text-lg font-semibold text-gray-800 mb-4">📝 تنظیمات فونت و جدول</h3>
+                  <div class="space-y-4">
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-2">اندازه فونت پیش‌فرض</label>
+                      <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <option value="small">کوچک (12px)</option>
+                        <option value="medium" selected>متوسط (14px)</option>
+                        <option value="large">بزرگ (16px)</option>
+                        <option value="xlarge">خیلی بزرگ (18px)</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-2">تعداد ردیف در جدول</label>
+                      <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <option value="10">۱۰ ردیف</option>
+                        <option value="25" selected>۲۵ ردیف</option>
+                        <option value="50">۵۰ ردیف</option>
+                        <option value="100">۱۰۰ ردیف</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-2">تراکم جدول</label>
+                      <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <option value="compact">فشرده</option>
+                        <option value="normal" selected>عادی</option>
+                        <option value="comfortable">راحت</option>
+                      </select>
+                    </div>
+                    <button class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
+                      اعمال تنظیمات
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Backup and Services Settings -->
+            <div id="backup-settings" class="settings-content hidden">
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Backup Settings -->
+                <div class="bg-gray-50 rounded-xl p-6 border border-gray-200">
+                  <h3 class="text-lg font-semibold text-gray-800 mb-4">💾 پشتیبان‌گیری</h3>
+                  <div class="space-y-4">
+                    <div class="flex items-center justify-between p-4 bg-white rounded-lg border">
+                      <div>
+                        <span class="font-medium">پشتیبان‌گیری خودکار</span>
+                        <p class="text-sm text-gray-600">هر روز در ساعت ۲ بامداد</p>
+                      </div>
+                      <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" checked class="sr-only peer">
+                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                      </label>
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-2">فرکانس پشتیبان‌گیری</label>
+                      <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <option value="daily">روزانه</option>
+                        <option value="weekly" selected>هفتگی</option>
+                        <option value="monthly">ماهانه</option>
+                      </select>
+                    </div>
+                    <div class="flex gap-2">
+                      <button class="flex-1 bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors">
+                        ایجاد پشتیبان
+                      </button>
+                      <button class="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
+                        بازیابی
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- External Services -->
+                <div class="bg-gray-50 rounded-xl p-6 border border-gray-200">
+                  <h3 class="text-lg font-semibold text-gray-800 mb-4">🔗 اتصال به سرویس‌ها</h3>
+                  <div class="space-y-4">
+                    <div class="p-4 bg-white rounded-lg border">
+                      <h4 class="font-medium mb-2">📧 تنظیمات ایمیل</h4>
+                      <div class="space-y-2">
+                        <input type="email" placeholder="ایمیل سرور" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm">
+                        <input type="password" placeholder="رمز عبور" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm">
+                        <button class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors text-sm">
+                          تست اتصال
+                        </button>
+                      </div>
+                    </div>
+                    <div class="p-4 bg-white rounded-lg border">
+                      <h4 class="font-medium mb-2">📱 تنظیمات پیامک</h4>
+                      <div class="space-y-2">
+                        <input type="text" placeholder="API Key" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm">
+                        <input type="text" placeholder="شماره فرستنده" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm">
+                        <button class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors text-sm">
+                          تست اتصال
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Backup History -->
+              <div class="mt-6 bg-gray-50 rounded-xl p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">📋 تاریخچه پشتیبان‌گیری</h3>
+                <div class="overflow-x-auto">
+                  <table class="w-full text-sm text-right">
+                    <thead class="bg-gray-100">
+                      <tr>
+                        <th class="px-4 py-2 text-right">تاریخ</th>
+                        <th class="px-4 py-2 text-right">نوع</th>
+                        <th class="px-4 py-2 text-right">حجم</th>
+                        <th class="px-4 py-2 text-right">وضعیت</th>
+                        <th class="px-4 py-2 text-right">عملیات</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="border-b">
+                        <td class="px-4 py-2">۱۴۰۲/۱۲/۱۵ - ۰۲:۰۰</td>
+                        <td class="px-4 py-2">خودکار</td>
+                        <td class="px-4 py-2">۲.۵ MB</td>
+                        <td class="px-4 py-2"><span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">موفق</span></td>
+                        <td class="px-4 py-2">
+                          <button class="text-blue-600 hover:text-blue-800 ml-2">دانلود</button>
+                          <button class="text-red-600 hover:text-red-800">حذف</button>
+                        </td>
+                      </tr>
+                      <tr class="border-b">
+                        <td class="px-4 py-2">۱۴۰۲/۱۲/۱۴ - ۰۲:۰۰</td>
+                        <td class="px-4 py-2">خودکار</td>
+                        <td class="px-4 py-2">۲.۳ MB</td>
+                        <td class="px-4 py-2"><span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">موفق</span></td>
+                        <td class="px-4 py-2">
+                          <button class="text-blue-600 hover:text-blue-800 ml-2">دانلود</button>
+                          <button class="text-red-600 hover:text-red-800">حذف</button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>
